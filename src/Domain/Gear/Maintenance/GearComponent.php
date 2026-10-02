@@ -21,6 +21,7 @@ final readonly class GearComponent implements \JsonSerializable
         private GearIds $attachedTo,
         private ?string $localImagePath,
         private ?Money $purchasePrice,
+        private bool $isActive,
     ) {
         $this->maintenanceTasks = MaintenanceTasks::empty();
     }
@@ -31,6 +32,7 @@ final readonly class GearComponent implements \JsonSerializable
         GearIds $attachedTo,
         ?string $localImagePath,
         ?Money $purchasePrice,
+        bool $isActive = true,
     ): self {
         return new self(
             id: $id,
@@ -38,6 +40,7 @@ final readonly class GearComponent implements \JsonSerializable
             attachedTo: $attachedTo,
             localImagePath: $localImagePath,
             purchasePrice: $purchasePrice,
+            isActive: $isActive,
         );
     }
 
@@ -76,6 +79,11 @@ final readonly class GearComponent implements \JsonSerializable
         return $this->purchasePrice;
     }
 
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
     public function getMaintenanceTasks(): MaintenanceTasks
     {
         return $this->maintenanceTasks;
@@ -109,6 +117,7 @@ final readonly class GearComponent implements \JsonSerializable
             'id' => (string) $this->id,
             'label' => (string) $this->label,
             'localImagePath' => $this->localImagePath,
+            'isActive' => $this->isActive,
             'attachedTo' => $this->attachedTo->map(
                 static fn (GearId $gearId): string => $gearId->toUnprefixedString(),
             ),
